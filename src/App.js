@@ -1,23 +1,15 @@
-import './App.css';
+import './App.module.scss';
+import FormfieldComponent from './FormfieldComponent';
 import logo from './logo.svg';
 
 export default function App() {
+  const baseUrl = 'http://localhost:4000';
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div data-test-id="guest">
+      <div>Test</div>
+      <div>
+        <FormfieldComponent />
+      </div>
     </div>
   );
 }

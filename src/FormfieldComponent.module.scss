@@ -1,0 +1,9 @@
+.formfields {
+  padding: 10px;
+  font-weight: 800;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 275px;
+  border: 1px solid;
+  row-gap: 10px;
+}
