@@ -6,4 +6,17 @@
   width: 275px;
   border: 1px solid;
   row-gap: 10px;
+  margin: 50px;
+}
+
+.guestTable {
+  margin-top: 25px;
+  margin-left: 50px;
+}
+
+th,
+td {
+  border: 1px solid;
+  width: 150px;
+  text-align: left;
 }

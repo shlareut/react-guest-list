@@ -55,6 +55,9 @@ export default function FormfieldComponent() {
               </td>
               <td>{guest.firstName}</td>
               <td>{guest.lastName}</td>
+              <td>
+                <button>Delete</button>
+              </td>
             </tr>
           ))}
         </div>
