@@ -39,23 +39,19 @@ export default function GuestsTableComponent() {
   }
   // 3. Async function to delete user
   async function deleteGuest(guestId) {
-    const response = await fetch(`${baseUrl}/guests/${guestId}`, {
+    await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'DELETE',
     });
   }
   // 4. Async function to update user attendance
   async function updateGuest(guestId) {
-    const response = await fetch(`${baseUrl}/guests/${guestId}`, {
+    await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ attending: isAttending }),
     });
-  }
-  // 5. Handle checkbox behaviour
-  function handleCheck() {
-    // The issue is that setting the state directly in the checkbox won't work as it referring to the old state
     setIsAttending(!isAttending);
   }
   // Start body
@@ -105,8 +101,6 @@ export default function GuestsTableComponent() {
         />
         {/* End lastName input field */}
       </div>
-      <p>{firstName}</p>
-      <p>{lastName}</p>
       {/* End input fields */}
       {/* Start guest table display */}
       <table className={styles.guestTable}>
@@ -129,8 +123,7 @@ export default function GuestsTableComponent() {
                 <input
                   type="checkbox"
                   checked={guest.attending}
-                  onChange={() => {
-                    handleCheck();
+                  onClick={() => {
                     updateGuest(guest.id).catch((error) => {
                       console.log(error);
                     });
