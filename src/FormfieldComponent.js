@@ -20,6 +20,8 @@ export default function FormfieldComponent() {
         <input
           name="firstName"
           id="firstName"
+          value={firstName}
+          placeholder="Donald"
           onChange={(event) => {
             const newFirstName = event.currentTarget.value;
             setFirstName(newFirstName);
@@ -29,6 +31,8 @@ export default function FormfieldComponent() {
         <input
           name="lastName"
           id="lastName"
+          value={lastName}
+          placeholder="Duck"
           onChange={(event) => {
             const newLastName = event.currentTarget.value;
             setLastName(newLastName);
@@ -43,6 +47,8 @@ export default function FormfieldComponent() {
                 lastName: lastName,
               });
               setGuests(newGuests);
+              setFirstName('');
+              setLastName('');
             }
           }}
         />
@@ -56,7 +62,7 @@ export default function FormfieldComponent() {
             <th>Last Name</th>
           </tr>
           {guests.map((guest) => (
-            <tr key={`ID${guest.uuid}`}>
+            <tr key={`ID${guest.uuid}`} data-test-id="guest">
               <td>
                 <input type="checkbox" />
               </td>
