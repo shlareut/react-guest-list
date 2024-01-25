@@ -4,6 +4,7 @@ import styles from './FormfieldComponent.module.scss';
 
 export default function FormfieldComponent() {
   const [firstName, setFirstName] = useState('');
+  const firstNameRef = useRef();
   const [lastName, setLastName] = useState('');
   const lastNameRef = useRef();
   const [guests, setGuests] = useState([]);
@@ -22,6 +23,7 @@ export default function FormfieldComponent() {
           name="firstName"
           id="firstName"
           value={firstName}
+          ref={firstNameRef}
           placeholder="Donald"
           onChange={(event) => {
             const newFirstName = event.currentTarget.value;
@@ -56,6 +58,7 @@ export default function FormfieldComponent() {
               setGuests(newGuests);
               setFirstName('');
               setLastName('');
+              firstNameRef.current.focus();
             }
           }}
         />
