@@ -20,8 +20,8 @@ export default function GuestsTableComponent() {
       const response = await fetch(`${baseUrl}/guests`);
       const allGuests = await response.json();
       setGuests(allGuests);
-      setIsLoading(false);
       setIsDisabled(false);
+      setIsLoading(false);
     };
     getGuests().catch((error) => {
       console.log(error);
