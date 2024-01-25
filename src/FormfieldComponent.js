@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './FormfieldComponent.module.scss';
 
 export default function FormfieldComponent() {
@@ -34,8 +35,13 @@ export default function FormfieldComponent() {
           }}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
+              const uuid = uuidv4();
               const newGuests = [...guests];
-              newGuests.push({ firstName: firstName, lastName: lastName });
+              newGuests.push({
+                uuid: uuid,
+                firstName: firstName,
+                lastName: lastName,
+              });
               setGuests(newGuests);
             }
           }}
@@ -45,18 +51,31 @@ export default function FormfieldComponent() {
         <div className={styles.guestTable}>
           <tr>
             <th>Attendance</th>
+            <th>uuid</th>
             <th>First Name</th>
             <th>Last Name</th>
           </tr>
           {guests.map((guest) => (
-            <tr key={guest.lastName}>
+            <tr key={`ID${guest.uuid}`}>
               <td>
                 <input type="checkbox" />
               </td>
+              <td>{guest.uuid}</td>
               <td>{guest.firstName}</td>
               <td>{guest.lastName}</td>
               <td>
-                <button>Delete</button>
+                <button
+                  onClick={() => {
+                    const guestIndex = guests.findIndex(
+                      (item) => item.uuid === guest.uuid,
+                    );
+                    const newGuests = [...guests];
+                    newGuests.splice(guestIndex, 1);
+                    setGuests(newGuests);
+                  }}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
