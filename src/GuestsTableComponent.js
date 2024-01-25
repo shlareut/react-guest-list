@@ -68,11 +68,11 @@ export default function GuestsTableComponent() {
       {/* Start input fields */}
       <form>
         <label>
-          First Name
+          First name
           <input />
         </label>
         <label>
-          Last Name
+          Last name
           <input />
         </label>
       </form>
