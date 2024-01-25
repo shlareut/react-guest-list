@@ -7,11 +7,11 @@ export default function TableComponent(props) {
       const allGuests = await response.json();
       props.setIsLoading(false);
       props.setGuests(allGuests);
-      props.setIsDisabled(false);
     };
     getGuests().catch((error) => {
       console.log(error);
     });
+    props.setIsDisabled(false);
   });
   if (props.isLoading) {
     return 'Loading...';
