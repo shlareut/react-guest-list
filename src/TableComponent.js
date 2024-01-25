@@ -1,26 +1,21 @@
 import React, { useEffect } from 'react';
 
-export default function TableComponent({
-  setGuests,
-  setIsDisabled,
-  setIsLoading,
-  isLoading,
-  guests,
-  baseUrl,
-}) {
+export default function TableComponent(props) {
   useEffect(() => {
     const getGuests = async () => {
-      const response = await fetch(`${baseUrl}/guests`);
+      props.setIsLoading(true);
+      props.setIsDisabled(true);
+      const response = await fetch(`${props.baseUrl}/guests`);
       const allGuests = await response.json();
-      setGuests(allGuests);
-      setIsDisabled(false);
-      setIsLoading(false);
+      props.setGuests(allGuests);
+      props.setIsDisabled(false);
+      props.setIsLoading(false);
     };
     getGuests().catch((error) => {
       console.log(error);
     });
-  }, [baseUrl, setGuests, setIsDisabled, setIsLoading]);
-  if (isLoading) {
+  }, []);
+  if (props.isLoading) {
     return 'Loading...';
   }
   return (
@@ -34,7 +29,7 @@ export default function TableComponent({
         </tr>
       </thead>
       <tbody>
-        {guests.map((person) => (
+        {props.guests.map((person) => (
           <tr key={`ID${person.id}`} data-test-id="guest">
             <td>{person.id}</td>
             <td>{person.firstName}</td>
