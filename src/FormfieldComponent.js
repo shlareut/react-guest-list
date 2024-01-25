@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './FormfieldComponent.module.scss';
 
 export default function FormfieldComponent() {
-  const baseUrl = 'http://localhost:4000';
   const [firstName, setFirstName] = useState('');
   const firstNameRef = useRef();
   const [lastName, setLastName] = useState('');
