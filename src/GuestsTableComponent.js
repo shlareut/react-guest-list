@@ -8,6 +8,8 @@ export default function GuestsTableComponent() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isAttending, setIsAttending] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
   // Define refs for input field focus feature
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -18,6 +20,8 @@ export default function GuestsTableComponent() {
       const response = await fetch(`${baseUrl}/guests`);
       const allGuests = await response.json();
       setGuests(allGuests);
+      setIsLoading(false);
+      setIsDisabled(false);
     };
     getGuests().catch((error) => {
       console.log(error);
@@ -54,6 +58,10 @@ export default function GuestsTableComponent() {
     });
     setIsAttending(!isAttending);
   }
+  // Loading condition
+  if (isLoading) {
+    return 'Loading...';
+  }
   // Start body
   return (
     <>
@@ -66,6 +74,7 @@ export default function GuestsTableComponent() {
           value={firstName}
           ref={firstNameRef}
           placeholder="Donald"
+          disabled={isDisabled}
           onChange={(event) => {
             const newFirstName = event.currentTarget.value;
             setFirstName(newFirstName);
@@ -84,6 +93,7 @@ export default function GuestsTableComponent() {
           value={lastName}
           ref={lastNameRef}
           placeholder="Duck"
+          disabled={isDisabled}
           onChange={(event) => {
             const newLastName = event.currentTarget.value;
             setLastName(newLastName);
@@ -123,6 +133,7 @@ export default function GuestsTableComponent() {
                 <input
                   type="checkbox"
                   checked={guest.attending}
+                  aria-label={`${guest.firstName} ${guest.lastName} attending status`}
                   onClick={() => {
                     updateGuest(guest.id).catch((error) => {
                       console.log(error);
@@ -132,6 +143,7 @@ export default function GuestsTableComponent() {
               </td>
               <td>
                 <button
+                  aria-label={`Delete ${guest.firstName} ${guest.lastName}`}
                   onClick={() => {
                     deleteGuest(guest.id).catch((error) => {
                       console.log(error);
