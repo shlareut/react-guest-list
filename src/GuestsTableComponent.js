@@ -68,24 +68,26 @@ export default function GuestsTableComponent() {
       {/* Start input fields */}
       <div className={styles.inputFields}>
         {/* Start firstName input field */}
-        <label htmlFor="firstName">First name</label>
-        <input
-          id="firstName"
-          name="firstName"
-          value={firstName}
-          ref={firstNameRef}
-          placeholder="Donald"
-          disabled={isDisabled}
-          onChange={(event) => {
-            const newFirstName = event.currentTarget.value;
-            setFirstName(newFirstName);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              lastNameRef.current.focus();
-            }
-          }}
-        />
+        <label htmlFor="firstName">
+          <input
+            id="firstName"
+            name="firstName"
+            value={firstName}
+            ref={firstNameRef}
+            placeholder="Donald"
+            disabled={isDisabled}
+            onChange={(event) => {
+              const newFirstName = event.currentTarget.value;
+              setFirstName(newFirstName);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                lastNameRef.current.focus();
+              }
+            }}
+          />
+          First name
+        </label>
         {/* End firstName input field */}
         {/* Start lastName input field */}
         <label htmlFor="lastName">Last name</label>
@@ -152,7 +154,7 @@ export default function GuestsTableComponent() {
                     });
                   }}
                 >
-                  Delete {guest.id}
+                  Delete
                 </button>
               </td>
             </tr>
