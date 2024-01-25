@@ -68,7 +68,7 @@ export default function GuestsTableComponent() {
       {/* Start input fields */}
       <div className={styles.inputFields}>
         {/* Start firstName input field */}
-        <label htmlFor="firstName">
+        <label>
           <input
             id="firstName"
             name="firstName"
