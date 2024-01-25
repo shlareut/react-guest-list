@@ -8,6 +8,9 @@ export default function App() {
   const baseUrl = 'http://localhost:4000';
   const [guests, setGuests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  if (isLoading) {
+    return 'Loading...';
+  }
   return (
     <div>
       {/* <GuestsTableComponent /> */}
@@ -16,7 +19,6 @@ export default function App() {
         baseUrl={baseUrl}
         guests={guests}
         setGuests={setGuests}
-        isLoading={isLoading}
         setIsLoading={setIsLoading}
       />
     </div>

@@ -12,9 +12,6 @@ export default function TableComponent(props) {
       console.log(error);
     });
   });
-  if (props.isLoading) {
-    return 'Loading...';
-  }
   return (
     <table>
       <thead>
