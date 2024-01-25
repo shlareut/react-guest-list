@@ -1,54 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export default function TableComponent() {
+export default function TableComponent(props) {
+  useEffect(() => {
+    const getGuests = async () => {
+      const response = await fetch(`${props.baseUrl}/guests`);
+      const allGuests = await response.json();
+      props.setGuests(allGuests);
+      props.setIsLoading(false);
+    };
+    getGuests().catch((error) => {
+      console.log(error);
+    });
+  });
+  if (props.isLoading) {
+    return 'Loading...';
+  }
   return (
-    <>
-      {/* Start guest table display */}
-      <table className={styles.guestTable}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Attending</th>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Attending</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.guests.map((person) => (
+          <tr key={`ID${person.id}`} data-test-id="guest">
+            <td>{person.id}</td>
+            <td>{person.firstName}</td>
+            <td>{person.lastName}</td>
           </tr>
-        </thead>
-        <tbody>
-          {guests.map((guest) => (
-            <tr key={`ID${guest.id}`} data-test-id="guest">
-              <td>{guest.id}</td>
-              <td>{guest.firstName}</td>
-              <td>{guest.lastName}</td>
-              <td>{JSON.stringify(guest.attending)}</td>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={guest.attending}
-                  aria-label={`${guest.firstName} ${guest.lastName} attending status`}
-                  onClick={() => {
-                    updateGuest(guest.id).catch((error) => {
-                      console.log(error);
-                    });
-                  }}
-                />
-              </td>
-              <td>
-                <button
-                  aria-label={`Delete ${guest.firstName} ${guest.lastName}`}
-                  onClick={() => {
-                    deleteGuest(guest.id).catch((error) => {
-                      console.log(error);
-                    });
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {/* End guest table display */}
-    </>
+        ))}
+      </tbody>
+    </table>
   );
 }
