@@ -12,14 +12,7 @@ export default function TableComponent(props) {
     getGuests().catch((error) => {
       console.log(error);
     });
-  }, [
-    props.baseUrl,
-    props.setGuests,
-    props.setIsDisabled,
-    props.setIsLoading,
-    props.guests,
-    props.isLoading,
-  ]);
+  }, []);
   if (props.isLoading) {
     return 'Loading...';
   }
