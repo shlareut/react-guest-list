@@ -4,15 +4,22 @@ export default function TableComponent(props) {
   useEffect(() => {
     const getGuests = async () => {
       const response = await fetch(`${props.baseUrl}/guests`);
-      props.setIsDisabled(false);
-      props.setIsLoading(false);
       const allGuests = await response.json();
       props.setGuests(allGuests);
+      props.setIsDisabled(false);
+      props.setIsLoading(false);
     };
     getGuests().catch((error) => {
       console.log(error);
     });
-  });
+  }, [
+    props.baseUrl,
+    props.setGuests,
+    props.setIsDisabled,
+    props.setIsLoading,
+    props.guests,
+    props.isLoading,
+  ]);
   if (props.isLoading) {
     return 'Loading...';
   }

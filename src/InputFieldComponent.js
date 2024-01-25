@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function InputFieldComponent(props) {
   return (
-    <form>
+    <form onSubmit={(event) => event.preventDefault()}>
       <label>
         First name
         <input disabled={props.isDisabled} />
