@@ -6,6 +6,7 @@ export default function TableComponent(props) {
       const response = await fetch(`${props.baseUrl}/guests`);
       const allGuests = await response.json();
       props.setGuests(allGuests);
+      props.setIsDisabled(false);
       props.setIsLoading(false);
     };
     getGuests().catch((error) => {
@@ -17,27 +18,24 @@ export default function TableComponent(props) {
     return 'Loading...';
   }
   return (
-    <>
-      {props.setIsDisabled(false)}
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Attending</th>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Attending</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.guests.map((person) => (
+          <tr key={`ID${person.id}`} data-test-id="guest">
+            <td>{person.id}</td>
+            <td>{person.firstName}</td>
+            <td>{person.lastName}</td>
           </tr>
-        </thead>
-        <tbody>
-          {props.guests.map((person) => (
-            <tr key={`ID${person.id}`} data-test-id="guest">
-              <td>{person.id}</td>
-              <td>{person.firstName}</td>
-              <td>{person.lastName}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
+        ))}
+      </tbody>
+    </table>
   );
 }
