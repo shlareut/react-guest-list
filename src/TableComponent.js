@@ -5,13 +5,13 @@ export default function TableComponent(props) {
     const getGuests = async () => {
       const response = await fetch(`${props.baseUrl}/guests`);
       const allGuests = await response.json();
-      props.setIsLoading(false);
       props.setGuests(allGuests);
     };
     getGuests().catch((error) => {
       console.log(error);
     });
     props.setIsDisabled(false);
+    props.setIsLoading(false);
   });
   if (props.isLoading) {
     return 'Loading...';
