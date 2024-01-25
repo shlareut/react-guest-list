@@ -5,9 +5,9 @@ export default function TableComponent(props) {
     const getGuests = async () => {
       const response = await fetch(`${props.baseUrl}/guests`);
       const allGuests = await response.json();
-      await props.setGuests(allGuests);
       await props.setIsLoading(false);
       await props.setIsDisabled(false);
+      await props.setGuests(allGuests);
     };
     getGuests().catch((error) => {
       console.log(error);
