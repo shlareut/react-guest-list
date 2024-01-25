@@ -12,7 +12,7 @@ export default function GuestsTableComponent() {
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   // Functions
-  // 1. fetch guest list on each render
+  // 1. fetch guest list when guests change
   useEffect(() => {
     const getGuests = async () => {
       const response = await fetch(`${baseUrl}/guests`);
@@ -22,7 +22,7 @@ export default function GuestsTableComponent() {
     getGuests().catch((error) => {
       console.log(error);
     });
-  });
+  }, [guests]);
   // 2. Async function to create user
   async function createGuest() {
     const response = await fetch(`${baseUrl}/guests`, {
