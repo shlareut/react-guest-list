@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import styles from './FormfieldComponent.module.scss';
 
 export default function FormfieldComponent() {
+  const baseUrl = 'http://localhost:4000';
   const [firstName, setFirstName] = useState('');
   const firstNameRef = useRef();
   const [lastName, setLastName] = useState('');
@@ -14,6 +15,24 @@ export default function FormfieldComponent() {
   //   newGuests.push('Test');
   //   setGuests(newGuests);
   // }, [guests]);
+
+  // useEffect(() => {
+  //   const createGuest = async () => {
+  //     const response = await fetch(`${baseUrl}/guests`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         firstName: firstName,
+  //         lastName: lastName,
+  //       }),
+  //     });
+  //     const createdGuest = await response.json();
+  //   };
+  //   createGuest();
+  //   return () => {};
+  // }, [firstName, lastName]);
 
   return (
     <>
