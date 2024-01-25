@@ -1,15 +1,15 @@
 import React from 'react';
 
-export default function InputFieldComponent() {
+export default function InputFieldComponent(props) {
   return (
     <form>
       <label>
         First name
-        <input />
+        <input disabled={props.isDisabled} />
       </label>
       <label>
         Last name
-        <input />
+        <input disabled={props.isDisabled} />
       </label>
     </form>
   );
