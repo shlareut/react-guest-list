@@ -7,9 +7,9 @@ export default function TableComponent(props) {
       props.setIsDisabled(true);
       const response = await fetch(`${props.baseUrl}/guests`);
       const allGuests = await response.json();
-      props.setGuests(allGuests);
       props.setIsDisabled(false);
       props.setIsLoading(false);
+      props.setGuests(allGuests);
     };
     getGuests().catch((error) => {
       console.log(error);
