@@ -7,10 +7,11 @@ export default function GuestsTableComponent() {
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [isAttending, setIsAttending] = useState(false);
   // Define refs for input field focus feature
   const firstNameRef = useRef();
   const lastNameRef = useRef();
-  // useEffect functions
+  // Functions
   // 1. fetch guest list on each render
   useEffect(() => {
     const getGuests = async () => {
@@ -41,13 +42,22 @@ export default function GuestsTableComponent() {
     const response = await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'DELETE',
     });
-    const deletedGuest = await response.json();
-    const deletedGuestIndex = guests.findIndex((item) => item.id === guestId);
-    const newGuests = [...guests];
-    newGuests.splice(deletedGuestIndex, 1);
-    setGuests(newGuests);
   }
-
+  // 4. Async function to update user attendance
+  async function updateGuest(guestId) {
+    const response = await fetch(`${baseUrl}/guests/${guestId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ attending: isAttending }),
+    });
+  }
+  // 5. Handle checkbox behaviour
+  function handleCheck() {
+    // The issue is that setting the state directly in the checkbox won't work as it referring to the old state
+    setIsAttending(!isAttending);
+  }
   // Start body
   return (
     <>
@@ -110,11 +120,23 @@ export default function GuestsTableComponent() {
         </thead>
         <tbody>
           {guests.map((guest) => (
-            <tr key={`ID${guest.id}`}>
+            <tr key={`ID${guest.id}`} data-test-id="guest">
               <td>{guest.id}</td>
               <td>{guest.firstName}</td>
               <td>{guest.lastName}</td>
-              <td>{guest.attending ? 'true' : 'false'}</td>
+              <td>{JSON.stringify(guest.attending)}</td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={guest.attending}
+                  onChange={() => {
+                    handleCheck();
+                    updateGuest(guest.id).catch((error) => {
+                      console.log(error);
+                    });
+                  }}
+                />
+              </td>
               <td>
                 <button
                   onClick={() => {
