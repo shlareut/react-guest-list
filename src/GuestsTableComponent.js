@@ -70,6 +70,7 @@ export default function GuestsTableComponent() {
         {/* Start firstName input field */}
         <label htmlFor="firstName">First name</label>
         <input
+          id="firstName"
           name="firstName"
           value={firstName}
           ref={firstNameRef}
@@ -89,6 +90,7 @@ export default function GuestsTableComponent() {
         {/* Start lastName input field */}
         <label htmlFor="lastName">Last name</label>
         <input
+          id="lastName"
           name="lastName"
           value={lastName}
           ref={lastNameRef}
