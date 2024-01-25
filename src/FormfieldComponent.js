@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './FormfieldComponent.module.scss';
 
 export default function FormfieldComponent() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const lastNameRef = useRef();
   const [guests, setGuests] = useState([]);
 
   // useEffect(() => {
@@ -26,12 +27,18 @@ export default function FormfieldComponent() {
             const newFirstName = event.currentTarget.value;
             setFirstName(newFirstName);
           }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              lastNameRef.current.focus();
+            }
+          }}
         />
         <label htmlFor="lastName">Last name</label>
         <input
           name="lastName"
           id="lastName"
           value={lastName}
+          ref={lastNameRef}
           placeholder="Duck"
           onChange={(event) => {
             const newLastName = event.currentTarget.value;
