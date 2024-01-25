@@ -66,7 +66,17 @@ export default function GuestsTableComponent() {
   return (
     <>
       {/* Start input fields */}
-      <>
+      <form>
+        <label>
+          First Name
+          <input />
+        </label>
+        <label>
+          Last Name
+          <input />
+        </label>
+      </form>
+      <div className={styles.inputFields}>
         {/* Start firstName input field */}
         <label htmlFor="firstName">First name</label>
         <input
@@ -112,7 +122,7 @@ export default function GuestsTableComponent() {
           }}
         />
         {/* End lastName input field */}
-      </>
+      </div>
       {/* End input fields */}
       {/* Start guest table display */}
       <table className={styles.guestTable}>
