@@ -66,16 +66,6 @@ export default function GuestsTableComponent() {
   return (
     <>
       {/* Start input fields */}
-      <form>
-        <label>
-          First name
-          <input />
-        </label>
-        <label>
-          Last name
-          <input />
-        </label>
-      </form>
       <div className={styles.inputFields}>
         {/* Start firstName input field */}
         <label htmlFor="firstName">First name</label>
