@@ -19,7 +19,7 @@ export default function TableComponent({
     getGuests().catch((error) => {
       console.log(error);
     });
-  }, [setGuests, setIsDisabled, setIsLoading]);
+  }, [baseUrl, setGuests, setIsDisabled, setIsLoading]);
   if (isLoading) {
     return 'Loading...';
   }
