@@ -18,12 +18,24 @@ export default function TableComponent(props) {
     return 'Loading...';
   }
   return (
-    <ul>
-      {props.guests.map((person) => (
-        <li key={`ID${person.id}`} data-test-id="guest">
-          {person.firstName} {person.lastName}
-        </li>
-      ))}
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Attending</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.guests.map((person) => (
+          <tr key={`ID${person.id}`} data-test-id="guest">
+            <td>{person.id}</td>
+            <td>{person.firstName}</td>
+            <td>{person.lastName}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
