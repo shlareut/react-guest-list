@@ -114,20 +114,20 @@ export default function App() {
         </label>
         <p>Press ENTER to add new guest.</p>
       </form>
-      {isLoading ? (
-        'Loading...'
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Attending</th>
-              <th>Check</th>
-              <th>Remove?</th>
-            </tr>
-          </thead>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Attending</th>
+            <th>Check</th>
+            <th>Remove?</th>
+          </tr>
+        </thead>
+        {isLoading ? (
+          'Loading...'
+        ) : (
           <tbody>
             {guests.map((guest) => (
               <tr key={`ID${guest.id}`} data-test-id="guest">
@@ -164,8 +164,8 @@ export default function App() {
               </tr>
             ))}
           </tbody>
-        </table>
-      )}
+        )}
+      </table>
     </>
   );
 }
