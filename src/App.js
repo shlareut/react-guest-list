@@ -60,7 +60,6 @@ export default function App() {
       },
       body: JSON.stringify({ attending: !isAttending }),
     });
-    setIsAttending(!isAttending);
   }
   // Start of HTML content
   return (
