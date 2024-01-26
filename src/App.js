@@ -28,24 +28,22 @@ export default function App() {
   }, []);
   // 2. Async function to create user
   async function createGuest() {
-    const newGuests = [...guests];
-    const lastGuestIndex = newGuests.length - 1;
-    const lastGuestId = guests[lastGuestIndex].id;
     const response = await fetch(`${baseUrl}/guests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        id: +lastGuestId + 1,
-        firstName: firstName,
-        lastName: lastName,
-        attending: false,
-      }),
+      body: JSON.stringify({firstName: firstName, lastName: lastName,}),
     });
     const createdGuest = await response.json();
+    const newGuests = [...guests];
+    const lastGuestIndex = newGuests.length - 1;
+    const lastGuestId = guests[lastGuestIndex].id;
     newGuests.push({
-      createdGuest,
+      id: +lastGuestId +1,
+      firstName: firstName,
+      lastName: lastName,
+      attending: FALSE;
     });
     setGuests(newGuests);
     setFirstName('');
