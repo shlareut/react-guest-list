@@ -146,14 +146,14 @@ export default function GuestsTableComponent() {
               </td>
               <td>
                 <button
-                  aria-label={`Delete ${guest.firstName} ${guest.lastName}`}
+                  aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
                   onClick={() => {
                     deleteGuest(guest.id).catch((error) => {
                       console.log(error);
                     });
                   }}
                 >
-                  Delete
+                  Remove
                 </button>
               </td>
             </tr>
