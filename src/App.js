@@ -6,8 +6,8 @@ import TableComponent from './TableComponent';
 export default function App() {
   const baseUrl = 'http://localhost:4000';
   const [guests, setGuests] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   return (
     <div>
       <InputFieldComponent isDisabled={isDisabled} />
