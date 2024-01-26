@@ -47,7 +47,7 @@ export default function App() {
     const deletedGuest = await response.json();
     const newGuests = [...guests];
     const deletedGuestIndex = newGuests.indexOf(deletedGuest);
-    newGuests.splice(deletedGuestIndex, 1);
+    newGuests.splice(deletedGuestIndex - 1, 1);
     setGuests(newGuests);
   }
   // 4. Async function to update user attendance
