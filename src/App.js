@@ -55,12 +55,12 @@ export default function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ attending: guestAttending }),
+      body: JSON.stringify({ attending: !guestAttending }),
     });
     const updatedGuest = await response.json();
     const newGuests = [...guests];
     const updatedGuestIndex = newGuests.findIndex(updatedGuest);
-    newGuests[updatedGuestIndex].attending = !guestAttending;
+    newGuests[updatedGuestIndex].attending = guestAttending;
     setGuests(newGuests);
   }
   return (
