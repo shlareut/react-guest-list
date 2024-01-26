@@ -41,13 +41,9 @@ export default function App() {
   }
   // 3. Async function to delete user
   async function deleteGuest(guestId) {
-    const response = await fetch(`${baseUrl}/guests/${guestId}`, {
+    await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'DELETE',
     });
-    const deletedGuest = await response.json();
-    const newGuests = [...guests];
-    newGuests.splice(newGuests.indexOf(deletedGuest), 1);
-    setGuests(newGuests);
   }
   // 4. Async function to update user attendance
   async function updateGuest(guestId, isAttending) {
@@ -158,6 +154,12 @@ export default function App() {
                   <button
                     aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
                     onClick={() => {
+                      const newGuests = [...guests];
+                      const removedGuest = newGuests.findIndex(
+                        (item) => item.id === guest.id,
+                      );
+                      newGuests.splice(removedGuest, 1);
+                      setGuests(newGuests);
                       deleteGuest(guest.id).catch((error) => {
                         console.log(error);
                       });
