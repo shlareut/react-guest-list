@@ -5,6 +5,7 @@ export default function App() {
   const baseUrl =
     'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
   // 'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
+  const [guestCounter, setGuestCounter] = useState(0); // Create helper state to use in useEffect as a dependency.
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -22,11 +23,12 @@ export default function App() {
       setGuests(allGuests);
       setIsDisabled(false);
       setIsLoading(false);
+      console.log('Pageload...');
     };
     getGuests().catch((error) => {
       console.log(error);
     });
-  }, []);
+  }, [isAttending, guestCounter]);
   // 2. Async function to create user
   async function createGuest() {
     const response = await fetch(`${baseUrl}/guests`, {
@@ -40,12 +42,14 @@ export default function App() {
     const newGuests = [...guests];
     newGuests.push(createdGuest);
     setGuests(newGuests);
+    setGuestCounter(guestCounter + 1);
   }
   // 3. Async function to delete user
   async function deleteGuest(guestId) {
     await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'DELETE',
     });
+    setGuestCounter(guestCounter - 1);
   }
   // 4. Async function to update user attendance
   async function updateGuest(guestId) {
@@ -134,7 +138,7 @@ export default function App() {
                     type="checkbox"
                     checked={guest.attending}
                     aria-label={`${guest.firstName} ${guest.lastName} attending status`}
-                    onClick={() => {
+                    onChange={() => {
                       updateGuest(guest.id).catch((error) => {
                         console.log(error);
                       });
