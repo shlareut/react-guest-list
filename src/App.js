@@ -20,7 +20,6 @@ export default function App() {
       setGuests(allGuests);
       setIsLoading(false);
       setIsDisabled(false);
-      console.log('Pageload...');
     };
     getGuests().catch((error) => {
       console.log(error);
