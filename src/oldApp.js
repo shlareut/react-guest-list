@@ -4,28 +4,31 @@ import { useEffect, useRef, useState } from 'react';
 export default function App() {
   const baseUrl =
     'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
-  const [isLoading, setIsLoading] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(true);
+  // 'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
+  const [guestCounter, setGuestCounter] = useState(0); // Create helper state to use in useEffect as a dependency
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [isAttending, setIsAttending] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
   // Define refs for input field focus feature
   const firstNameRef = useRef();
   const lastNameRef = useRef();
-  // Fetch users on page load
+  // useEffect to fetch data from API
   useEffect(() => {
     const getGuests = async () => {
       const response = await fetch(`${baseUrl}/guests`);
       const allGuests = await response.json();
       setGuests(allGuests);
-      setIsLoading(false);
       setIsDisabled(false);
+      setIsLoading(false);
       console.log('Pageload...');
     };
     getGuests().catch((error) => {
       console.log(error);
     });
-  }, []);
+  }, [isAttending, guestCounter]);
   // 2. Async function to create user
   async function createGuest() {
     const response = await fetch(`${baseUrl}/guests`, {
@@ -36,25 +39,38 @@ export default function App() {
       body: JSON.stringify({ firstName: firstName, lastName: lastName }),
     });
     const createdGuest = await response.json();
+    const newGuests = [...guests];
+    newGuests.push(createdGuest);
+    setGuests(newGuests);
+    setGuestCounter(guestCounter + 1);
   }
   // 3. Async function to delete user
   async function deleteGuest(guestId) {
     await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'DELETE',
     });
+    setGuestCounter(guestCounter - 1);
   }
   // 4. Async function to update user attendance
-  async function updateGuest(guestId, isAttending) {
+  async function updateGuest(guestId) {
     await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ attending: isAttending }),
+      body: JSON.stringify({ attending: !isAttending }),
     });
+    setIsAttending(!isAttending);
   }
+  // Start of HTML content
   return (
     <>
+      {/* Start input fields */}
+      <p>
+        {firstName}
+        {lastName}
+        {isAttending}
+      </p>
       <form>
         <label>
           First name
@@ -89,16 +105,6 @@ export default function App() {
             }}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
-                const newGuests = [...guests];
-                const lastGuestIndex = newGuests.length - 1;
-                const lastGuestId = guests[lastGuestIndex].id;
-                newGuests.push({
-                  id: +lastGuestId + 1,
-                  firstName: firstName,
-                  lastName: lastName,
-                  attending: false,
-                });
-                setGuests(newGuests);
                 createGuest().catch((error) => {
                   console.log(error);
                 });
@@ -110,9 +116,12 @@ export default function App() {
           />
         </label>
       </form>
+      {/* End input fields */}
+      {/* Loading condition */}
       {isLoading ? (
         'Loading...'
       ) : (
+        // Start guest table
         <table>
           <thead>
             <tr>
@@ -135,14 +144,7 @@ export default function App() {
                     checked={guest.attending}
                     aria-label={`${guest.firstName} ${guest.lastName} attending status`}
                     onChange={() => {
-                      const newGuests = [...guests];
-                      const updatedGuest = newGuests.findIndex(
-                        (item) => item.id === guest.id,
-                      );
-                      newGuests[updatedGuest].attending =
-                        !newGuests[updatedGuest].attending;
-                      setGuests(newGuests);
-                      updateGuest(guest.id, guest.attending).catch((error) => {
+                      updateGuest(guest.id).catch((error) => {
                         console.log(error);
                       });
                     }}
@@ -152,12 +154,6 @@ export default function App() {
                   <button
                     aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
                     onClick={() => {
-                      const newGuests = [...guests];
-                      const removedGuest = newGuests.findIndex(
-                        (item) => item.id === guest.id,
-                      );
-                      newGuests.splice(removedGuest, 1);
-                      setGuests(newGuests);
                       deleteGuest(guest.id).catch((error) => {
                         console.log(error);
                       });
@@ -170,6 +166,7 @@ export default function App() {
             ))}
           </tbody>
         </table>
+        // End guest table
       )}
     </>
   );
