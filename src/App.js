@@ -49,14 +49,19 @@ export default function App() {
     setGuests(newGuests);
   }
   // 4. Async function to update user attendance
-  async function updateGuest(guestId, isAttending) {
-    await fetch(`${baseUrl}/guests/${guestId}`, {
+  async function updateGuest(guestId, guestAttending) {
+    const response = await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ attending: isAttending }),
+      body: JSON.stringify({ attending: !guestAttending }),
     });
+    const updatedGuest = await response.json();
+    const newGuests = [...guests];
+    const updatedGuestIndex = newGuests.findIndex(updatedGuest);
+    newGuests[updatedGuestIndex].attending = !guestAttending;
+    setGuests(newGuests);
   }
   return (
     <>
@@ -94,16 +99,6 @@ export default function App() {
             }}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
-                // const newGuests = [...guests];
-                // const lastGuestIndex = newGuests.length - 1;
-                // const lastGuestId = guests[lastGuestIndex].id;
-                // newGuests.push({
-                //   id: +lastGuestId + 1,
-                //   firstName: firstName,
-                //   lastName: lastName,
-                //   attending: false,
-                // });
-                // setGuests(newGuests);
                 createGuest().catch((error) => {
                   console.log(error);
                 });
@@ -140,13 +135,13 @@ export default function App() {
                     checked={guest.attending}
                     aria-label={`${guest.firstName} ${guest.lastName} attending status`}
                     onChange={() => {
-                      const newGuests = [...guests];
-                      const updatedGuest = newGuests.findIndex(
-                        (item) => item.id === guest.id,
-                      );
-                      newGuests[updatedGuest].attending =
-                        !newGuests[updatedGuest].attending;
-                      setGuests(newGuests);
+                      // const newGuests = [...guests];
+                      // const updatedGuest = newGuests.findIndex(
+                      //   (item) => item.id === guest.id,
+                      // );
+                      // newGuests[updatedGuest].attending =
+                      //   !newGuests[updatedGuest].attending;
+                      // setGuests(newGuests);
                       updateGuest(guest.id, guest.attending).catch((error) => {
                         console.log(error);
                       });
