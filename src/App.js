@@ -4,8 +4,7 @@ import InputFieldComponent from './InputFieldComponent';
 import TableComponent from './TableComponent';
 
 export default function App() {
-  const baseUrl =
-    'http://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
+  const baseUrl = 'http://localhost:4000';
   const [guests, setGuests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
