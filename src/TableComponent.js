@@ -2,14 +2,12 @@ import React, { useEffect } from 'react';
 
 export default function TableComponent(props) {
   useEffect(() => {
-    props.setIsLoading(true);
-    props.setIsDisabled(true);
     const getGuests = async () => {
+      props.setIsDisabled(false);
+      props.setIsLoading(false);
       const response = await fetch(`${props.baseUrl}/guests`);
       const allGuests = await response.json();
       props.setGuests(allGuests);
-      props.setIsDisabled(false);
-      props.setIsLoading(false);
     };
     getGuests().catch((error) => {
       console.log(error);
