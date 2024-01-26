@@ -6,3 +6,26 @@
   box-sizing: border-box;
   font-family: 'Be Vietnam Pro', sans-serif;
 }
+
+form {
+  padding: 10px;
+  font-weight: 800;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 275px;
+  border: 1px solid;
+  row-gap: 10px;
+  margin: 50px;
+}
+
+table {
+  margin-top: 25px;
+  margin-left: 50px;
+}
+
+th,
+td {
+  border: 1px solid;
+  width: 150px;
+  text-align: left;
+}
