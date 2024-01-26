@@ -58,13 +58,19 @@ export default function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ attending: isAttending }),
+      body: JSON.stringify({ attending: !isAttending }),
     });
+    setIsAttending(!isAttending);
   }
   // Start of HTML content
   return (
     <>
       {/* Start input fields */}
+      <p>
+        {firstName}
+        {lastName}
+        {isAttending}
+      </p>
       <form>
         <label>
           First name
@@ -135,10 +141,9 @@ export default function App() {
                 <td>
                   <input
                     type="checkbox"
-                    checked={isAttending}
+                    checked={guest.attending}
                     aria-label={`${guest.firstName} ${guest.lastName} attending status`}
-                    onChange={(event) => {
-                      setIsAttending(event.currentTarget.checked);
+                    onChange={() => {
                       updateGuest(guest.id).catch((error) => {
                         console.log(error);
                       });
