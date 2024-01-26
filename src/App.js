@@ -5,7 +5,7 @@ export default function App() {
   const baseUrl =
     'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
   // 'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
-  const [guestCounter, setGuestCounter] = useState(0); // Create helper state to use in useEffect as a dependency.
+  const [guestCounter, setGuestCounter] = useState(0); // Create helper state to use in useEffect as a dependency
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -60,13 +60,12 @@ export default function App() {
       },
       body: JSON.stringify({ attending: isAttending }),
     });
-    setIsAttending(!isAttending);
   }
   // Start of HTML content
   return (
     <>
       {/* Start input fields */}
-      <form onSubmit={(event) => event.preventDefault()}>
+      <form>
         <label>
           First name
           <input
@@ -136,9 +135,10 @@ export default function App() {
                 <td>
                   <input
                     type="checkbox"
-                    checked={guest.attending}
+                    checked={isAttending}
                     aria-label={`${guest.firstName} ${guest.lastName} attending status`}
-                    onChange={() => {
+                    onChange={(event) => {
+                      setIsAttending(event.currentTarget.checked);
                       updateGuest(guest.id).catch((error) => {
                         console.log(error);
                       });
