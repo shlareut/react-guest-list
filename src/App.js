@@ -58,11 +58,9 @@ export default function App() {
       body: JSON.stringify({ attending: !guestAttending }),
     });
     const updatedGuest = await response.json();
-    const newGuests = guests.map((guest) => {
-      if (guest.id === guestId) {
-        return (guest.attending = updatedGuest.attending);
-      }
-    });
+    const newGuests = guests.map((guest) =>
+      guest.id === updatedGuest.id ? updatedGuest : guest,
+    );
     setGuests(newGuests);
 
     // guests.with(guests.indexOf(updatedGuest), updatedGuest);
