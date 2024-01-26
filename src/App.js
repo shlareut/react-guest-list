@@ -33,17 +33,17 @@ export default function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({firstName: firstName, lastName: lastName,}),
+      body: JSON.stringify({ firstName: firstName, lastName: lastName }),
     });
     const createdGuest = await response.json();
     const newGuests = [...guests];
     const lastGuestIndex = newGuests.length - 1;
     const lastGuestId = guests[lastGuestIndex].id;
     newGuests.push({
-      id: +lastGuestId +1,
+      id: +lastGuestId + 1,
       firstName: firstName,
       lastName: lastName,
-      attending: JSON.stringify(false);
+      attending: JSON.stringify(false),
     });
     setGuests(newGuests);
     setFirstName('');
