@@ -3,8 +3,7 @@ import styles from './GuestsTableComponent.module.scss';
 
 export default function GuestsTableComponent() {
   // Defining const
-  const baseUrl =
-    'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
+  const baseUrl = 'http://localhost:4000';
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
