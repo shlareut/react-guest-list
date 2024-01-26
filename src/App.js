@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function App() {
   const baseUrl =
-    'http://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
+    'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
   // 'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
