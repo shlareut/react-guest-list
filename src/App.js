@@ -89,9 +89,6 @@ export default function App() {
             }}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
-                createGuest().catch((error) => {
-                  console.log(error);
-                });
                 const newGuests = [...guests];
                 const lastGuestIndex = newGuests.length - 1;
                 const lastGuestId = guests[lastGuestIndex].id;
@@ -105,6 +102,9 @@ export default function App() {
                 setFirstName('');
                 setLastName('');
                 firstNameRef.current.focus();
+                createGuest().catch((error) => {
+                  console.log(error);
+                });
               }
             }}
           />
