@@ -26,7 +26,7 @@ export default function App() {
     getGuests().catch((error) => {
       console.log(error);
     });
-  }, [guests]);
+  }, []);
   // 2. Async function to create user
   async function createGuest() {
     const response = await fetch(`${baseUrl}/guests`, {
