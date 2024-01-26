@@ -36,18 +36,6 @@ export default function App() {
       body: JSON.stringify({ firstName: firstName, lastName: lastName }),
     });
     const createdGuest = await response.json();
-    const newGuests = [...guests];
-    const lastGuestIndex = newGuests.length - 1;
-    const lastGuestId = guests[lastGuestIndex].id;
-    newGuests.push({
-      id: +lastGuestId + 1,
-      firstName: firstName,
-      lastName: lastName,
-      attending: false,
-    });
-    setGuests(newGuests);
-    setFirstName('');
-    setLastName('');
   }
   // 3. Async function to delete user
   async function deleteGuest(guestId) {
@@ -101,10 +89,22 @@ export default function App() {
             }}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
-                firstNameRef.current.focus();
+                const newGuests = [...guests];
+                const lastGuestIndex = newGuests.length - 1;
+                const lastGuestId = guests[lastGuestIndex].id;
+                newGuests.push({
+                  id: +lastGuestId + 1,
+                  firstName: firstName,
+                  lastName: lastName,
+                  attending: false,
+                });
+                setGuests(newGuests);
                 createGuest().catch((error) => {
                   console.log(error);
                 });
+                setFirstName('');
+                setLastName('');
+                firstNameRef.current.focus();
               }
             }}
           />
