@@ -1,9 +1,11 @@
 import './App.module.scss';
 import { useEffect, useRef, useState } from 'react';
+import styles from './App.module.scss';
 
 export default function App() {
   const baseUrl =
     'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
+  // 'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
   const [isLoading, setIsLoading] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
   const [guests, setGuests] = useState([]);
@@ -62,16 +64,10 @@ export default function App() {
       guest.id === updatedGuest.id ? updatedGuest : guest,
     );
     setGuests(newGuests);
-
-    // guests.with(guests.indexOf(updatedGuest), updatedGuest);
-    // setGuests(newGuests);
-    // const newGuests = [...guests];
-    // const updatedGuestIndex = newGuests.findIndex(updatedGuest);
-    // newGuests[updatedGuestIndex].attending = guestAttending;
-    // setGuests(newGuests);
   }
   return (
     <>
+      <h1>Guest List</h1>
       <form>
         <label>
           First name
@@ -116,6 +112,7 @@ export default function App() {
             }}
           />
         </label>
+        <p>Press ENTER to add new guest.</p>
       </form>
       {isLoading ? (
         'Loading...'
@@ -127,6 +124,8 @@ export default function App() {
               <th>First Name</th>
               <th>Last Name</th>
               <th>Attending</th>
+              <th>Check</th>
+              <th>Remove?</th>
             </tr>
           </thead>
           <tbody>
@@ -135,20 +134,15 @@ export default function App() {
                 <td>{guest.id}</td>
                 <td>{guest.firstName}</td>
                 <td>{guest.lastName}</td>
-                <td>{JSON.stringify(guest.attending)}</td>
+                <td className={styles.attendance}>
+                  {JSON.stringify(guest.attending)}
+                </td>
                 <td>
                   <input
                     type="checkbox"
                     checked={guest.attending}
                     aria-label={`${guest.firstName} ${guest.lastName} attending status`}
                     onChange={() => {
-                      // const newGuests = [...guests];
-                      // const updatedGuest = newGuests.findIndex(
-                      //   (item) => item.id === guest.id,
-                      // );
-                      // newGuests[updatedGuest].attending =
-                      //   !newGuests[updatedGuest].attending;
-                      // setGuests(newGuests);
                       updateGuest(guest.id, guest.attending).catch((error) => {
                         console.log(error);
                       });
