@@ -43,7 +43,7 @@ export default function App() {
       id: +lastGuestId + 1,
       firstName: firstName,
       lastName: lastName,
-      attending: JSON.stringify(false),
+      attending: false,
     });
     setGuests(newGuests);
     setFirstName('');
