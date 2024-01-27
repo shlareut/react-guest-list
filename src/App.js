@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './App.module.scss';
 
 export default function App() {
-  const baseUrl =
-    'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
+  const baseUrl = 'http://localhost:4000';
   // 'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
   const [isLoading, setIsLoading] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -65,6 +64,36 @@ export default function App() {
     );
     setGuests(newGuests);
   }
+  // 5. Helper function to delete all guests without setting the state
+  async function deleteGuestWithoutSettingState(guestId) {
+    const response = await fetch(`${baseUrl}/guests/${guestId}`, {
+      method: 'DELETE',
+    });
+    const deletedGuest = await response.json();
+    return deletedGuest;
+  }
+  // 6. Function to delete all guests
+  async function deleteAllGuests() {
+    console.log('start deleting...');
+    const deleteGuestPromises = guests.map((guest) =>
+      deleteGuestWithoutSettingState(guest.id),
+    );
+    const deletedGuests = await Promise.all(deleteGuestPromises);
+    const deletedGuestsIds = await Promise.all(
+      deletedGuests.map((guest) => guest.id),
+    );
+    console.log('finish deleting...');
+    console.log(deletedGuestsIds);
+    // Checking if ANY guest was not deleted, it yes, this guest will be pushed into the new guests array
+    const newGuests = [];
+    for (const guest of guests) {
+      if (!deletedGuestsIds.includes(guest.id)) {
+        newGuests.push(guest);
+        console.log('Non-deleted guest found!');
+      }
+    }
+    setGuests(newGuests);
+  }
   return (
     <>
       <h1>Guest List</h1>
@@ -122,7 +151,6 @@ export default function App() {
             <th>Last Name</th>
             <th>Attending</th>
             <th>Check</th>
-            <th>Remove?</th>
           </tr>
         </thead>
         {isLoading ? (
@@ -166,6 +194,15 @@ export default function App() {
           </tbody>
         )}
       </table>
+      <button
+        onClick={() => {
+          deleteAllGuests().catch((error) => {
+            console.log(error);
+          });
+        }}
+      >
+        Remove all
+      </button>
     </>
   );
 }
