@@ -10,6 +10,8 @@ export default function App() {
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [isAttendingFilter, setIsAttendingFilter] = useState(false);
+  const [isNonAttendingFilter, setIsNonAttendingFilter] = useState(false);
   // Define refs for input field focus feature
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -64,30 +66,32 @@ export default function App() {
     );
     setGuests(newGuests);
   }
-  // 5. Helper function to delete all guests without setting the state
-  async function deleteGuestWithoutSettingState(guestId) {
+  // 5. Helper function to delete all attending guests without setting the state YET
+  async function deleteAllAttendingGuestWithoutSettingState(guestId) {
     const response = await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'DELETE',
     });
     const deletedGuest = await response.json();
     return deletedGuest;
   }
-  // 6. Function to delete all guests
-  async function deleteAllGuests() {
+  // 6. Function to delete all attending guests
+  async function deleteAllAttendingGuests() {
     console.log('start deleting...');
-    const deleteGuestPromises = guests.map((guest) =>
-      deleteGuestWithoutSettingState(guest.id),
+    const deleteAttendingGuestsPromises = guests
+      .filter((guest) => guest.attending === true)
+      .map((guest) => deleteAllAttendingGuestWithoutSettingState(guest.id));
+    const deleteAttendingGuests = await Promise.all(
+      deleteAttendingGuestsPromises,
     );
-    const deletedGuests = await Promise.all(deleteGuestPromises);
-    const deletedGuestsIds = await Promise.all(
-      deletedGuests.map((guest) => guest.id),
+    const deletedGuests = await Promise.all(
+      deleteAttendingGuests.map((guest) => guest.id),
     );
     console.log('finish deleting...');
-    console.log(deletedGuestsIds);
+    console.log(deletedGuests);
     // Checking if ANY guest was not deleted, it yes, this guest will be pushed into the new guests array
     const newGuests = [];
     for (const guest of guests) {
-      if (!deletedGuestsIds.includes(guest.id)) {
+      if (!deletedGuests.includes(guest.id)) {
         newGuests.push(guest);
         console.log('Non-deleted guest found!');
       }
@@ -157,51 +161,88 @@ export default function App() {
           'Loading...'
         ) : (
           <tbody>
-            {guests.map((guest) => (
-              <tr key={`ID${guest.id}`} data-test-id="guest">
-                <td>{guest.id}</td>
-                <td>{guest.firstName}</td>
-                <td>{guest.lastName}</td>
-                <td className={styles.attendance}>
-                  {JSON.stringify(guest.attending)}
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={guest.attending}
-                    aria-label={`${guest.firstName} ${guest.lastName} attending status`}
-                    onChange={() => {
-                      updateGuest(guest.id, guest.attending).catch((error) => {
-                        console.log(error);
-                      });
-                    }}
-                  />
-                </td>
-                <td>
-                  <button
-                    aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
-                    onClick={() => {
-                      deleteGuest(guest.id).catch((error) => {
-                        console.log(error);
-                      });
-                    }}
-                  >
-                    Remove
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {guests
+              .filter((guest) => {
+                if (isAttendingFilter) {
+                  return guest.attending === true;
+                }
+                if (isNonAttendingFilter) {
+                  return guest.attending === false;
+                } else {
+                  return guest;
+                }
+              })
+              .map((guest) => (
+                <tr key={`ID${guest.id}`} data-test-id="guest">
+                  <td>{guest.id}</td>
+                  <td>{guest.firstName}</td>
+                  <td>{guest.lastName}</td>
+                  <td className={styles.attendance}>
+                    {JSON.stringify(guest.attending)}
+                  </td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={guest.attending}
+                      aria-label={`${guest.firstName} ${guest.lastName} attending status`}
+                      onChange={() => {
+                        updateGuest(guest.id, guest.attending).catch(
+                          (error) => {
+                            console.log(error);
+                          },
+                        );
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <button
+                      aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
+                      onClick={() => {
+                        deleteGuest(guest.id).catch((error) => {
+                          console.log(error);
+                        });
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         )}
       </table>
       <button
         onClick={() => {
-          deleteAllGuests().catch((error) => {
+          deleteAllAttendingGuests().catch((error) => {
             console.log(error);
           });
         }}
       >
-        Remove all
+        Remove attending guests
+      </button>
+      <button
+        onClick={() => {
+          setIsNonAttendingFilter(false);
+          setIsAttendingFilter(!isAttendingFilter);
+        }}
+      >
+        Filter for attending guests
+      </button>
+      <button
+        onClick={() => {
+          setIsAttendingFilter(false);
+          setIsNonAttendingFilter(!isNonAttendingFilter);
+        }}
+      >
+        Filter for non-attending guests
+      </button>
+      <button
+        onClick={() => {
+          setIsAttendingFilter(false);
+          setIsNonAttendingFilter(false);
+        }}
+      >
+        Reset filters
       </button>
     </>
   );
