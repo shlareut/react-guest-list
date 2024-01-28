@@ -1,6 +1,7 @@
 import './App.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import styles from './App.module.scss';
+import remove from './remove.svg';
 
 export default function App() {
   const baseUrl =
@@ -102,64 +103,73 @@ export default function App() {
   }
   return (
     <div className={styles.mainWrapper}>
-      <h1>Guest List</h1>
-      <div className={styles.topSubWrapper}>
-        <fieldset className={styles.textInputFields}>
-          <legend>Add guests</legend>
-          <label className={styles.textInputLabel}>
-            First name
-            <input
-              disabled={isDisabled}
-              name="firstName"
-              value={firstName}
-              ref={firstNameRef}
-              placeholder="Donald"
-              onChange={(event) => {
-                const newFirstName = event.currentTarget.value;
-                setFirstName(newFirstName);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  lastNameRef.current.focus();
-                }
-              }}
-            />
-          </label>
-          <label className={styles.textInputLabel}>
-            Last name
-            <input
-              disabled={isDisabled}
-              name="lastName"
-              value={lastName}
-              ref={lastNameRef}
-              placeholder="Duck"
-              onChange={(event) => {
-                const newLastName = event.currentTarget.value;
-                setLastName(newLastName);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  createGuest().catch((error) => {
-                    console.log(error);
-                  });
-                  setFirstName('');
-                  setLastName('');
-                  firstNameRef.current.focus();
-                }
-              }}
-            />
-          </label>
-        </fieldset>
+      <h1>Guest list</h1>
+      <div className={styles.textInputWrapper}>
+        <label className={styles.textInputLabel}>
+          First name
+          <input
+            disabled={isDisabled}
+            name="firstName"
+            value={firstName}
+            ref={firstNameRef}
+            placeholder="Donald"
+            onChange={(event) => {
+              const newFirstName = event.currentTarget.value;
+              setFirstName(newFirstName);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                lastNameRef.current.focus();
+              }
+            }}
+          />
+        </label>
+        <label className={styles.textInputLabel}>
+          Last name
+          <input
+            disabled={isDisabled}
+            name="lastName"
+            value={lastName}
+            ref={lastNameRef}
+            placeholder="Duck"
+            onChange={(event) => {
+              const newLastName = event.currentTarget.value;
+              setLastName(newLastName);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                createGuest().catch((error) => {
+                  console.log(error);
+                });
+                setFirstName('');
+                setLastName('');
+                firstNameRef.current.focus();
+              }
+            }}
+          />
+        </label>
+        <button
+          onClick={() => {
+            createGuest().catch((error) => {
+              console.log(error);
+            });
+            setFirstName('');
+            setLastName('');
+            firstNameRef.current.focus();
+          }}
+        >
+          Add guest
+        </button>
       </div>
-      <div className={styles.bottomSubWrapper}>
-        <div>
+      <div className={styles.tableWrapper}>
+        <div className={styles.table}>
           <table>
             <thead>
               <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Attending</th>
-                <th> </th>
+                <th className={styles.fixedWidthColumn}>Attends</th>
+                <th className={styles.fixedWidthColumn}> </th>
               </tr>
             </thead>
             {isLoading ? (
@@ -181,7 +191,7 @@ export default function App() {
                     <tr key={`ID${guest.id}`} data-test-id="guest">
                       <td>{guest.firstName}</td>
                       <td>{guest.lastName}</td>
-                      <td>
+                      <td className={styles.fixedWidthColumn}>
                         <input
                           type="checkbox"
                           checked={guest.attending}
@@ -195,8 +205,9 @@ export default function App() {
                           }}
                         />
                       </td>
-                      <td>
+                      <td className={styles.fixedWidthColumn}>
                         <button
+                          className={styles.deleteButton}
                           aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
                           onClick={() => {
                             deleteGuest(guest.id).catch((error) => {
@@ -204,7 +215,7 @@ export default function App() {
                             });
                           }}
                         >
-                          Remove
+                          <img alt="remove-guest" src={remove} />
                         </button>
                       </td>
                     </tr>
@@ -239,7 +250,7 @@ export default function App() {
                   setIsShowNotAttending(false);
                 }}
               />
-              Show attending
+              Show attendees
             </label>
             <label>
               <input
@@ -251,7 +262,7 @@ export default function App() {
                   setIsShowNotAttending(true);
                 }}
               />
-              Show not attending
+              Show non-attendees
             </label>
           </fieldset>
           <fieldset>
@@ -263,7 +274,7 @@ export default function App() {
                 });
               }}
             >
-              Remove attending guests
+              Remove attendees
             </button>
           </fieldset>
         </div>
