@@ -6,7 +6,6 @@ import remove from './remove.svg';
 export default function App() {
   const baseUrl =
     'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
-  // 'https://3017054f-3047-4982-af57-e3eba6bfda04-00-2rhehhnwbgksp.picard.replit.dev';
   const [isLoading, setIsLoading] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
   const [guests, setGuests] = useState([]);
@@ -69,7 +68,7 @@ export default function App() {
     );
     setGuests(newGuests);
   }
-  // 5. Helper function to delete all attending guests without setting the state YET
+  // 5. Helper function to delete all attendees without setting the state YET
   async function deleteAllAttendingGuestWithoutSettingState(guestId) {
     const response = await fetch(`${baseUrl}/guests/${guestId}`, {
       method: 'DELETE',
@@ -77,7 +76,7 @@ export default function App() {
     const deletedGuest = await response.json();
     return deletedGuest;
   }
-  // 6. Function to delete all attending guests
+  // 6. Actual function to delete all attendees (using the helper function) and sets the state after all attendees are deleted (using Promise.all())
   async function deleteAllAttendingGuests() {
     console.log('start deleting...');
     const deleteAttendingGuestsPromises = guests
@@ -104,6 +103,7 @@ export default function App() {
   return (
     <div className={styles.mainWrapper}>
       <h1>Guest list</h1>
+      {/* Start of text input fields */}
       <div className={styles.textInputWrapper}>
         <label className={styles.textInputLabel}>
           First name
@@ -161,7 +161,10 @@ export default function App() {
           Add guest
         </button>
       </div>
+      {/* End of text input fields */}
+      {/* Start of text table and filter section */}
       <div className={styles.tableWrapper}>
+        {/* Start of table */}
         <div className={styles.table}>
           <table>
             <thead>
@@ -172,6 +175,7 @@ export default function App() {
                 <th className={styles.fixedWidthColumn}> </th>
               </tr>
             </thead>
+            {/* Start of conditional rendering */}
             {isLoading ? (
               'Loading...'
             ) : (
@@ -187,6 +191,8 @@ export default function App() {
                       return guest;
                     }
                   })
+                  // End of conditional rendering
+                  // Start of displaying guest list
                   .map((guest) => (
                     <tr key={`ID${guest.id}`} data-test-id="guest">
                       <td>{guest.firstName}</td>
@@ -220,11 +226,15 @@ export default function App() {
                       </td>
                     </tr>
                   ))}
+                {/* End of displaying guest list */}
               </tbody>
             )}
           </table>
+          {/* End of table */}
         </div>
+        {/* Start of filters and quick action section */}
         <div className={styles.quickActions}>
+          {/* Start of filter radio buttons */}
           <fieldset className={styles.filters}>
             <legend>Filters</legend>
             <label>
@@ -265,6 +275,8 @@ export default function App() {
               Show non-attendees
             </label>
           </fieldset>
+          {/* End of filter radio buttons */}
+          {/* Start of quick actions */}
           <fieldset>
             <legend>Quick actions</legend>
             <button
@@ -277,8 +289,10 @@ export default function App() {
               Remove attendees
             </button>
           </fieldset>
+          {/* End of quick actions */}
         </div>
       </div>
+      {/* End of text table and filter section */}
     </div>
   );
 }
