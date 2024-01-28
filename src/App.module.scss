@@ -7,7 +7,7 @@
   font-family: 'Be Vietnam Pro', sans-serif;
 }
 
-div {
+.mainContainer {
   padding: 50px;
   width: 60%;
 }
@@ -30,7 +30,7 @@ form {
   gap: 15px;
 }
 
-label {
+.textInputLabel {
   display: flex;
   flex-direction: row;
   gap: 25px;

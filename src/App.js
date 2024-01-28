@@ -10,8 +10,9 @@ export default function App() {
   const [guests, setGuests] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [isAttendingFilter, setIsAttendingFilter] = useState(false);
-  const [isNonAttendingFilter, setIsNonAttendingFilter] = useState(false);
+  const [isShowAll, setIsShowAll] = useState(true);
+  const [isShowAttending, setIsShowAttending] = useState(false);
+  const [isShowNotAttending, setIsShowNotAttending] = useState(false);
   // Define refs for input field focus feature
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -99,10 +100,10 @@ export default function App() {
     setGuests(newGuests);
   }
   return (
-    <>
+    <div className={styles.mainContainer}>
       <h1>Guest List</h1>
       <form>
-        <label>
+        <label className={styles.textInputLabel}>
           First name
           <input
             disabled={isDisabled}
@@ -121,7 +122,7 @@ export default function App() {
             }}
           />
         </label>
-        <label>
+        <label className={styles.textInputLabel}>
           Last name
           <input
             disabled={isDisabled}
@@ -147,6 +148,48 @@ export default function App() {
         </label>
         <p>Press ENTER to add new guest.</p>
       </form>
+      <div>
+        <div className={styles.filter}>
+          <label htmlFor="showAll">Show all</label>
+          <input
+            type="radio"
+            defaultChecked
+            checked={isShowAll === true}
+            id="showAll"
+            onClick={() => {
+              setIsShowAll(true);
+              setIsShowAttending(false);
+              setIsShowNotAttending(false);
+            }}
+          />
+        </div>
+        <div className={styles.filter}>
+          <label htmlFor="showAttending">Show attending</label>
+          <input
+            type="radio"
+            checked={isShowAttending === true}
+            id="showAttending"
+            onClick={() => {
+              setIsShowAll(false);
+              setIsShowAttending(true);
+              setIsShowNotAttending(false);
+            }}
+          />
+        </div>
+        <div className={styles.filter}>
+          <label htmlFor="showNotAttending">Show not attending</label>
+          <input
+            type="radio"
+            checked={isShowNotAttending === true}
+            id="showNotAttending"
+            onClick={() => {
+              setIsShowAll(false);
+              setIsShowAttending(false);
+              setIsShowNotAttending(true);
+            }}
+          />
+        </div>
+      </div>
       <table>
         <thead>
           <tr>
@@ -163,10 +206,10 @@ export default function App() {
           <tbody>
             {guests
               .filter((guest) => {
-                if (isAttendingFilter) {
+                if (isShowAttending) {
                   return guest.attending === true;
                 }
-                if (isNonAttendingFilter) {
+                if (isShowNotAttending) {
                   return guest.attending === false;
                 } else {
                   return guest;
@@ -220,30 +263,6 @@ export default function App() {
       >
         Remove attending guests
       </button>
-      <button
-        onClick={() => {
-          setIsNonAttendingFilter(false);
-          setIsAttendingFilter(!isAttendingFilter);
-        }}
-      >
-        Filter for attending guests
-      </button>
-      <button
-        onClick={() => {
-          setIsAttendingFilter(false);
-          setIsNonAttendingFilter(!isNonAttendingFilter);
-        }}
-      >
-        Filter for non-attending guests
-      </button>
-      <button
-        onClick={() => {
-          setIsAttendingFilter(false);
-          setIsNonAttendingFilter(false);
-        }}
-      >
-        Reset filters
-      </button>
-    </>
+    </div>
   );
 }
