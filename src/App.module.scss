@@ -7,53 +7,121 @@
   font-family: 'Be Vietnam Pro', sans-serif;
 }
 
-.mainContainer {
+.mainWrapper {
   padding: 50px;
   width: 60%;
-}
-
-h1 {
-  margin-bottom: 25px;
-  border-bottom: 1px solid;
-}
-
-p {
-  font-weight: 600;
-  font-size: 9px;
-  margin-left: 105px;
-}
-
-form {
-  padding: 20px 0px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px;
 }
 
-.textInputLabel {
-  display: flex;
-  flex-direction: row;
-  gap: 25px;
-  font-weight: 600;
+.bottomSubWrapper {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+thead,
+tfoot {
+  background-color: #3f87a6;
+  color: #fff;
+}
+
+tbody {
+  background-color: #e4f0f5;
 }
 
 table {
+  border-collapse: collapse;
+  border: 2px solid rgb(200, 200, 200);
+  letter-spacing: 1px;
+  font-size: 0.8rem;
   width: 100%;
 }
 
-th,
-td {
-  padding: 0px 0px;
-}
-
+td,
 th {
-  background-color: cornflowerblue;
-  border: 1px solid;
+  border: 1px solid rgb(190, 190, 190);
+  padding: 5px 10px;
   text-align: left;
 }
 
-.attendance {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+// h1 {
+//   margin-bottom: 25px;
+//   border-bottom: 1px solid;
+// }
+
+// // fieldset {
+// //   border-radius: 10px;
+// //   padding: 15px;
+// //   display: flex;
+// //   flex-direction: column;
+// //   gap: 10px;
+// // }
+
+// .textInputFields {
+//   display: flex;
+//   flex-direction: row;
+//   border-radius: 10px;
+//   padding: 15px;
+//   gap: 15px;
+// }
+
+// label {
+//   display: flex;
+//   flex-direction: row;
+//   gap: 10px;
+// }
+
+// .bottomContainer {
+//   display: grid;
+//   grid-template-columns: 3fr 1fr;
+//   gap: 10px;
+// }
+
+// .tableContainer {
+//   border: 1px solid;
+// }
+
+// .quickActions {
+// }
+
+// p {
+//   font-weight: 600;
+//   font-size: 9px;
+//   margin-left: 105px;
+// }
+
+// form {
+//   padding: 20px 0px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 15px;
+// }
+
+// .textInputLabel {
+//   display: flex;
+//   flex-direction: row;
+//   gap: 25px;
+//   font-weight: 600;
+// }
+
+// table {
+//   width: 100%;
+// }
+
+// th,
+// td {
+//   padding: 0px 0px;
+// }
+
+// th {
+//   background-color: cornflowerblue;
+//   border: 1px solid;
+//   text-align: left;
+// }
+
+// .attendance {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+// }

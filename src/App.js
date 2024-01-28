@@ -101,169 +101,173 @@ export default function App() {
     setGuests(newGuests);
   }
   return (
-    <div className={styles.mainContainer}>
+    <div className={styles.mainWrapper}>
       <h1>Guest List</h1>
-      <form>
-        <label className={styles.textInputLabel}>
-          First name
-          <input
-            disabled={isDisabled}
-            name="firstName"
-            value={firstName}
-            ref={firstNameRef}
-            placeholder="Donald"
-            onChange={(event) => {
-              const newFirstName = event.currentTarget.value;
-              setFirstName(newFirstName);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                lastNameRef.current.focus();
-              }
-            }}
-          />
-        </label>
-        <label className={styles.textInputLabel}>
-          Last name
-          <input
-            disabled={isDisabled}
-            name="lastName"
-            value={lastName}
-            ref={lastNameRef}
-            placeholder="Duck"
-            onChange={(event) => {
-              const newLastName = event.currentTarget.value;
-              setLastName(newLastName);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                createGuest().catch((error) => {
+      <div className={styles.topSubWrapper}>
+        <fieldset className={styles.textInputFields}>
+          <legend>Add guests</legend>
+          <label className={styles.textInputLabel}>
+            First name
+            <input
+              disabled={isDisabled}
+              name="firstName"
+              value={firstName}
+              ref={firstNameRef}
+              placeholder="Donald"
+              onChange={(event) => {
+                const newFirstName = event.currentTarget.value;
+                setFirstName(newFirstName);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  lastNameRef.current.focus();
+                }
+              }}
+            />
+          </label>
+          <label className={styles.textInputLabel}>
+            Last name
+            <input
+              disabled={isDisabled}
+              name="lastName"
+              value={lastName}
+              ref={lastNameRef}
+              placeholder="Duck"
+              onChange={(event) => {
+                const newLastName = event.currentTarget.value;
+                setLastName(newLastName);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  createGuest().catch((error) => {
+                    console.log(error);
+                  });
+                  setFirstName('');
+                  setLastName('');
+                  firstNameRef.current.focus();
+                }
+              }}
+            />
+          </label>
+        </fieldset>
+      </div>
+      <div className={styles.bottomSubWrapper}>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Attending</th>
+                <th> </th>
+              </tr>
+            </thead>
+            {isLoading ? (
+              'Loading...'
+            ) : (
+              <tbody>
+                {guests
+                  .filter((guest) => {
+                    if (isShowAttending) {
+                      return guest.attending === true;
+                    }
+                    if (isShowNotAttending) {
+                      return guest.attending === false;
+                    } else {
+                      return guest;
+                    }
+                  })
+                  .map((guest) => (
+                    <tr key={`ID${guest.id}`} data-test-id="guest">
+                      <td>{guest.firstName}</td>
+                      <td>{guest.lastName}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={guest.attending}
+                          aria-label={`${guest.firstName} ${guest.lastName} attending status`}
+                          onChange={() => {
+                            updateGuest(guest.id, guest.attending).catch(
+                              (error) => {
+                                console.log(error);
+                              },
+                            );
+                          }}
+                        />
+                      </td>
+                      <td>
+                        <button
+                          aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
+                          onClick={() => {
+                            deleteGuest(guest.id).catch((error) => {
+                              console.log(error);
+                            });
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            )}
+          </table>
+        </div>
+        <div className={styles.quickActions}>
+          <fieldset className={styles.filters}>
+            <legend>Filters</legend>
+            <label>
+              <input
+                type="radio"
+                defaultChecked
+                checked={isShowAll === true}
+                onClick={() => {
+                  setIsShowAll(true);
+                  setIsShowAttending(false);
+                  setIsShowNotAttending(false);
+                }}
+              />
+              Show all
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={isShowAttending === true}
+                onClick={() => {
+                  setIsShowAll(false);
+                  setIsShowAttending(true);
+                  setIsShowNotAttending(false);
+                }}
+              />
+              Show attending
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={isShowNotAttending === true}
+                onClick={() => {
+                  setIsShowAll(false);
+                  setIsShowAttending(false);
+                  setIsShowNotAttending(true);
+                }}
+              />
+              Show not attending
+            </label>
+          </fieldset>
+          <fieldset>
+            <legend>Quick actions</legend>
+            <button
+              onClick={() => {
+                deleteAllAttendingGuests().catch((error) => {
                   console.log(error);
                 });
-                setFirstName('');
-                setLastName('');
-                firstNameRef.current.focus();
-              }
-            }}
-          />
-        </label>
-        <p>Press ENTER to add new guest.</p>
-      </form>
-      <div>
-        <div className={styles.filter}>
-          <label htmlFor="showAll">Show all</label>
-          <input
-            type="radio"
-            defaultChecked
-            checked={isShowAll === true}
-            id="showAll"
-            onClick={() => {
-              setIsShowAll(true);
-              setIsShowAttending(false);
-              setIsShowNotAttending(false);
-            }}
-          />
-        </div>
-        <div className={styles.filter}>
-          <label htmlFor="showAttending">Show attending</label>
-          <input
-            type="radio"
-            checked={isShowAttending === true}
-            id="showAttending"
-            onClick={() => {
-              setIsShowAll(false);
-              setIsShowAttending(true);
-              setIsShowNotAttending(false);
-            }}
-          />
-        </div>
-        <div className={styles.filter}>
-          <label htmlFor="showNotAttending">Show not attending</label>
-          <input
-            type="radio"
-            checked={isShowNotAttending === true}
-            id="showNotAttending"
-            onClick={() => {
-              setIsShowAll(false);
-              setIsShowAttending(false);
-              setIsShowNotAttending(true);
-            }}
-          />
+              }}
+            >
+              Remove attending guests
+            </button>
+          </fieldset>
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Attending</th>
-            <th>Check</th>
-          </tr>
-        </thead>
-        {isLoading ? (
-          'Loading...'
-        ) : (
-          <tbody>
-            {guests
-              .filter((guest) => {
-                if (isShowAttending) {
-                  return guest.attending === true;
-                }
-                if (isShowNotAttending) {
-                  return guest.attending === false;
-                } else {
-                  return guest;
-                }
-              })
-              .map((guest) => (
-                <tr key={`ID${guest.id}`} data-test-id="guest">
-                  <td>{guest.id}</td>
-                  <td>{guest.firstName}</td>
-                  <td>{guest.lastName}</td>
-                  <td className={styles.attendance}>
-                    {JSON.stringify(guest.attending)}
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={guest.attending}
-                      aria-label={`${guest.firstName} ${guest.lastName} attending status`}
-                      onChange={() => {
-                        updateGuest(guest.id, guest.attending).catch(
-                          (error) => {
-                            console.log(error);
-                          },
-                        );
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <button
-                      aria-label={`Remove ${guest.firstName} ${guest.lastName}`}
-                      onClick={() => {
-                        deleteGuest(guest.id).catch((error) => {
-                          console.log(error);
-                        });
-                      }}
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        )}
-      </table>
-      <button
-        onClick={() => {
-          deleteAllAttendingGuests().catch((error) => {
-            console.log(error);
-          });
-        }}
-      >
-        Remove attending guests
-      </button>
     </div>
   );
 }
