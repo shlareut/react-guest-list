@@ -169,8 +169,8 @@ export default function App() {
           <table>
             <thead>
               <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>First name</th>
+                <th>Last name</th>
                 <th className={styles.fixedWidthColumn}>Attends</th>
                 <th className={styles.fixedWidthColumn}> </th>
               </tr>
